@@ -1,9 +1,13 @@
-import { initializeApp } from 'firebase/app'
+import { 
+    initializeApp ,
+} from 'firebase/app'
 import {
     getFirestore,
     collection,
     getDocs,
-    addDoc
+    addDoc,
+    deleteDoc,
+    doc,
 } from 'firebase/firestore'
 
 
@@ -62,10 +66,22 @@ const firebaseConfig = {
 
     })
 
-    //deleting documents
+    //deleting documents requires deleteDoc() and for refrencing require doc()
     const deleteBookForm = document.querySelector('.delete')
     deleteBookForm.addEventListener('submit',(e) => {
         e.preventDefault()
+
+        //1) create a refrence to document 
+        // docRef() => database(firestore) , document name , id
+        const docRef = doc(db,'Books',deleteBookForm.id.value)
+
+        //2)delete doc
+        deleteDoc(docRef)
+        .this(() => {
+            //reseting form
+            deleteBookForm.reset()
+        })
+        
 
 
     })
